@@ -80,4 +80,25 @@ creatBoard(yourBoardSetup, yourTable);
 creatBoard(computerSetup, computerTable);
 
 
+// --===================================================-- 
+// -- Object constructor for ship
+// --===================================================-- 
+function ship (size, positionX, positionY)
+{
+    this.size = size;
+    this.health = size;
+    this.alive = true;
+    this.positionX = positionX;
+    this.positionY = positionY;
+
+    function hit()
+    {
+        --this.health;
+        if (this.health === 0) 
+        {
+            this.alive = false;
+        }
+    }
+}
+
 }());

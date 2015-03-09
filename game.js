@@ -151,6 +151,8 @@ var Battleship = {
 
         Battleship.settings.computerShips.push(new Battleship.Ship(length, col, row));
 
+        
+
     },
 
 
@@ -182,6 +184,11 @@ var Battleship = {
                     }
                 }
 
+            }
+
+            if ((parseInt(col) + length) > Battleship.settings.sizeX)
+            {
+                error = true;
             }
                             
         });

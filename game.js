@@ -36,12 +36,14 @@ var Battleship = {
         {
             // Creates each row on the board and appends it to the table
             var row = document.createElement("tr");
+            row.setAttribute("id", i);
             tableID.appendChild(row);
 
             // Creates <td> and ands it to each row
             for (var j = 0; j < sizeX; j++) 
             {
                 var tdata = document.createElement("td");
+                tdata.setAttribute("id", j);
                 tdata.setAttribute("data-row", i);
                 tdata.setAttribute("data-col", j);
                 if (tableID === yourTable)
@@ -142,13 +144,13 @@ var Battleship = {
 
         do
         {
-            row = Math.floor((Math.random() * Battleship.settings.sizeY) + 1);
-            col = Math.floor((Math.random() * Battleship.settings.sizeX) + 1);
+            row = Math.floor((Math.random() * Battleship.settings.sizeY));
+            col = Math.floor((Math.random() * Battleship.settings.sizeX));
         } 
         while (Battleship.ValidatingShipPosition(col, row, length));
 
         Battleship.settings.computerShips.push(new Battleship.Ship(length, col, row));
-        
+
     },
 
 

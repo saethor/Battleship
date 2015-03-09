@@ -1,104 +1,78 @@
-(function() {
+(function(){
+"use strict";
 
 var yourTable     = document.getElementById('you');
 var computerTable = document.getElementById('computer');
 
+var Battleship = {
 
-// --===================================================-- 
-// -- Boards setup
-// --===================================================--
-var yourBoardSetup = [['','','','','','#','#','','',''],
-                     ['','','','','','','','','',''],
-                     ['','','','','','','','','',''],
-                     ['','#','#','#','#','','','','',''],
-                     ['#','','','','','','','','',''],
-                     ['#','','','','','','','','',''],
-                     ['#','','','','','#','#','#','',''],
-                     ['#','','','','','','','','',''],
-                     ['','','#','#','#','#','#','','',''],
-                     ['','','','','','','','','','']];
-
-var computerSetup = [['','','','','','#','#','#','',''],
-                     ['','','','','','','','','',''],
-                     ['','#','','','','','','','',''],
-                     ['','#','','','#','','','','#',''],
-                     ['','#','','','#','','','','#',''],
-                     ['','#','','','#','','','','',''],
-                     ['','','','','#','','','','',''],
-                     ['','','','','','','','','',''],
-                     ['','','','','','','','','',''],
-                     ['','','','#','#','#','#','#','','']];
-
-
-
-// --===================================================-- 
-// -- Function for drawing playerboards
-// --===================================================-- 
-function creatBoard(boardArray, tableID) 
-{
-    for (var i = 0; i < boardArray.length; i++) 
+    settings: 
     {
-        // Creates each row on the board and appends it to the table
-        var row = document.createElement("tr");
-        tableID.appendChild(row);
+        sizeX: 10,
+        sizeY: 10,
+        numShips: 5
+    },
 
-        // Creates <td> and ands it to each row
-        for (var j = 0; j < boardArray[i].length; j++) 
+    Init: function () 
+    {
+        this.CreateBoard(this.settings.sizeX, this.settings.sizeY, yourTable);
+        this.StartGame();
+
+    },
+
+    // --===================================================-- 
+    // -- Function for drawing playerboards
+    // --===================================================-- 
+    CreateBoard: function (sizeX, sizeY, tableID) 
+    {
+
+        for (var i = 0; i < sizeY; i++) 
         {
-            var tdata = document.createElement("td");
+            // Creates each row on the board and appends it to the table
+            var row = document.createElement("tr");
+            tableID.appendChild(row);
 
-            // Checks if td represents part of a ship and ads class if it is your ship
-            // If it not your ship it adds a event listener
-            if (boardArray[i][j] == '#')
+            // Creates <td> and ands it to each row
+            for (var j = 0; j < sizeX; j++) 
             {
-                if (tableID == yourTable) 
-                {
-                    tdata.setAttribute("class", "ship");
-                } 
-                else 
-                {
-                    tdata.addEventListener("click", function() {
-                        this.setAttribute("class", "hit");
-                    });
-                }
+                var tdata = document.createElement("td");
+                tdata.setAttribute("data-row", i);
+                tdata.setAttribute("data-col", j);
                 
+                // Appends <td> to <tr>
+                row.appendChild(tdata);
             }
-            else 
-            {
-                tdata.addEventListener("click", function() {
-                    this.setAttribute("class", "no-hit");
-                });
-            }
-
-            // Appends <td> to <tr>
-            row.appendChild(tdata);
         }
-    }
-}
+    },
 
-creatBoard(yourBoardSetup, yourTable);
-creatBoard(computerSetup, computerTable);
-
-
-// --===================================================-- 
-// -- Object constructor for ship
-// --===================================================-- 
-function ship (size, positionX, positionY)
-{
-    this.size = size;
-    this.health = size;
-    this.alive = true;
-    this.positionX = positionX;
-    this.positionY = positionY;
-
-    function hit()
+    StartGame: function() 
     {
-        --this.health;
-        if (this.health === 0) 
+        
+    },
+
+    // --===================================================-- 
+    // -- Object constructor for ship
+    // --===================================================-- 
+    Ship: function  (size, positionX, positionY)
+    {
+        this.size = size;
+        this.health = size;
+        this.alive = true;
+        this.positionX = positionX;
+        this.positionY = positionY;
+
+        function hit()
         {
-            this.alive = false;
+            --this.health;
+            if (this.health === 0) 
+            {
+                this.alive = false;
+            }
         }
     }
-}
+};
+
+Battleship.Init();
+
 
 }());

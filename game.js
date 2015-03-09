@@ -19,11 +19,11 @@ var Battleship = {
     {
         this.CreateBoard(this.settings.sizeX, this.settings.sizeY, yourTable, []);
         this.CreateBoard(this.settings.sizeX, this.settings.sizeY, computerTable, []);
-        for (var i = 0; i < Battleship.settings.numShips; i++)
-        {
+        //for (var i = 0; i < Battleship.settings.numShips; i++)
+        //{
             this.PlaceComputerShip();
 
-        }
+        //}
     },
 
     // --===================================================-- 
@@ -141,13 +141,15 @@ var Battleship = {
         var row;
         var col;
         var length = Battleship.GetLengthOfShips("computerShips");
+        var validate;
 
         do
         {
-            row = Math.floor((Math.random() * Battleship.settings.sizeY));
-            col = Math.floor((Math.random() * Battleship.settings.sizeX));
+            row = Math.floor(Math.random() * Battleship.settings.sizeY);
+            col = Math.floor(Math.random() * Battleship.settings.sizeX);
+            validate = Battleship.ValidatingShipPosition(col, row, length);
         } 
-        while (Battleship.ValidatingShipPosition(col, row, length));
+        while (validate === true);
 
         Battleship.settings.computerShips.push(new Battleship.Ship(length, col, row));
 
@@ -204,13 +206,13 @@ var Battleship = {
                 }
 
             }
-
-            if ((parseInt(col) + length) > Battleship.settings.sizeX)
-            {
-                error = true;
-            }
                             
         });
+
+        if ((parseInt(col) + length) > Battleship.settings.sizeX)
+        {
+            error = true;
+        }
 
         return error;
     },

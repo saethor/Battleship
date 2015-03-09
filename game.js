@@ -18,7 +18,12 @@ var Battleship = {
     Init: function () 
     {
         this.CreateBoard(this.settings.sizeX, this.settings.sizeY, yourTable, []);
+        this.CreateBoard(this.settings.sizeX, this.settings.sizeY, computerTable, []);
+        for (var i = 0; i < Battleship.settings.numShips; i++)
+        {
+            this.PlaceComputerShip();
 
+        }
     },
 
     // --===================================================-- 
@@ -39,7 +44,10 @@ var Battleship = {
                 var tdata = document.createElement("td");
                 tdata.setAttribute("data-row", i);
                 tdata.setAttribute("data-col", j);
-                tdata.addEventListener('click', this.PlaceUserShip);
+                if (tableID === yourTable)
+                {
+                    tdata.addEventListener('click', this.PlaceUserShip);
+                }
                 
                 // Appends <td> to <tr>
                 row.appendChild(tdata);
@@ -49,20 +57,11 @@ var Battleship = {
 
 
 
-    // --===================================================-- 
-    // -- Function for placing users ships
-    // --===================================================-- 
-    PlaceUserShip: function(player) 
+    GetLengthOfShips: function(shipArray) 
     {
-
-        if (Battleship.settings.userShips.length < Battleship.settings.numShips)
-        {
-
-            var row = this.getAttribute("data-row");
-            var col = this.getAttribute("data-col");
-
-            var length = 0;
-            switch (Battleship.settings.userShips.length)
+        var switchArray = (shipArray === "userShips") ? Battleship.settings.userShips.length : Battleship.settings.computerShips.length; 
+        var length = 0;
+            switch (switchArray)
             {
                 case 0:
                     length = 2;
@@ -84,9 +83,26 @@ var Battleship = {
                     length = 4;
                     break;
             }
+        return length;
+    },
 
 
-            var error = this.ValidatingShipPosition(col, row);
+
+    // --===================================================-- 
+    // -- Function for placing users ships
+    // --===================================================-- 
+    PlaceUserShip: function(player) 
+    {
+
+        if (Battleship.settings.userShips.length < Battleship.settings.numShips)
+        {
+
+            var row = this.getAttribute("data-row");
+            var col = this.getAttribute("data-col");
+
+            var length = Battleship.GetLengthOfShips("userShips");
+
+            var error = Battleship.ValidatingShipPosition(col, row, length);
 
             
             if (!error)
@@ -116,9 +132,31 @@ var Battleship = {
 
 
     // --===================================================-- 
+    // -- Function for placing computer ships
+    // --===================================================-- 
+    PlaceComputerShip: function() 
+    {
+        var row;
+        var col;
+        var length = Battleship.GetLengthOfShips("computerShips");
+
+        do
+        {
+            row = Math.floor((Math.random() * Battleship.settings.sizeY) + 1);
+            col = Math.floor((Math.random() * Battleship.settings.sizeX) + 1);
+        } 
+        while (Battleship.ValidatingShipPosition(col, row, length));
+
+        Battleship.settings.computerShips.push(new Battleship.Ship(length, col, row));
+        
+    },
+
+
+
+    // --===================================================-- 
     // -- Function for validating ships positions
     // --===================================================-- 
-    ValidatingShipPosition: function(col, row) 
+    ValidatingShipPosition: function(col, row, length) 
     {
         var error = false;
 
@@ -128,20 +166,17 @@ var Battleship = {
             {
                 for ( var i = ship.positionX; i < (parseInt(ship.positionX) + parseInt(ship.size)); i++)
                 {
-                    console.log(i);
                     if (col == i)
                     {
                         error = true;
-                        console.log("error");
                     }
                 }
+                
                 for ( var j = col; j < (parseInt(col) + parseInt(length)); j++)
                 {
-                    if (j == ship.positionY)
+                    if (j == ship.positionX)
                     {
                         error = true;
-
-                        console.log("error2");
                     }
                 }
 

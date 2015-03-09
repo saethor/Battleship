@@ -151,7 +151,26 @@ var Battleship = {
 
         Battleship.settings.computerShips.push(new Battleship.Ship(length, col, row));
 
-        
+        console.log(Battleship.settings.computerShips);
+
+        var test = document.getElementById("computer").children[parseInt(row)].children[parseInt(col)];
+        test.setAttribute("class", "ship");
+
+        for(var i = 1; i < length; i++)
+        {
+            var sibling;
+            if(!sibling)
+            {
+                sibling = test.nextSibling;
+                
+            }
+            else {
+                sibling = sibling.nextSibling;
+            }
+            sibling.setAttribute("class", "ship");
+        }
+
+        Battleship.settings.userShips.push(new Battleship.Ship(length, col, row));
 
     },
 

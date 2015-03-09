@@ -19,11 +19,9 @@ var Battleship = {
     {
         this.CreateBoard(this.settings.sizeX, this.settings.sizeY, yourTable, []);
         this.CreateBoard(this.settings.sizeX, this.settings.sizeY, computerTable, []);
-        //for (var i = 0; i < Battleship.settings.numShips; i++)
-        //{
-            this.PlaceComputerShip();
+       
+        this.PlaceComputerShip();
 
-        //}
     },
 
     // --===================================================-- 
@@ -153,18 +151,15 @@ var Battleship = {
 
         Battleship.settings.computerShips.push(new Battleship.Ship(length, col, row));
 
-        console.log(Battleship.settings.computerShips);
+        var ship = document.getElementById("computer").children[parseInt(row)].children[parseInt(col)];
+        ship.setAttribute("class", "ship");
 
-        var test = document.getElementById("computer").children[parseInt(row)].children[parseInt(col)];
-        test.setAttribute("class", "ship");
-
+        var sibling;
         for(var i = 1; i < length; i++)
         {
-            var sibling;
             if(!sibling)
             {
-                sibling = test.nextSibling;
-                
+                sibling = ship.nextSibling;
             }
             else {
                 sibling = sibling.nextSibling;
@@ -172,7 +167,7 @@ var Battleship = {
             sibling.setAttribute("class", "ship");
         }
 
-        Battleship.settings.userShips.push(new Battleship.Ship(length, col, row));
+        Battleship.settings.computerShips.push(new Battleship.Ship(length, col, row));
 
     },
 

@@ -194,6 +194,27 @@ var Battleship = {
     // --===================================================-- 
     ValidatingShipPosition: function(start, stop, player) 
     {
+        var ships;
+        if (player === 1)
+        {
+            ships = Battleship.settings.userShips;
+        } 
+        if (player === 2)
+        {
+            ships = Battleship.settings.computerShips;
+        }   
+
+        
+        ships.forEach(function() 
+        {
+            for (var i = this.startId, j = start; i <= stop || j <= this.endId; i++, j++) 
+            {
+                if (i === j)
+                {
+                    return false;
+                }
+            }
+        });
             
     },
 

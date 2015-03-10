@@ -107,6 +107,8 @@ var Battleship = {
 
             var row = this.getAttribute("data-row");
             var col = this.getAttribute("data-col");
+            var shipStartId = '' + 1 + row + col;
+            var shipEndId = '' + 1 + row + (col + length - 1);
 
             var length = Battleship.GetLengthOfShips("userShips");
             
@@ -129,7 +131,7 @@ var Battleship = {
                     sibling.setAttribute("class", "ship");
                 }
 
-                Battleship.settings.userShips.push(new Battleship.Ship(length, col, row));
+                Battleship.settings.userShips.push(new Battleship.Ship(length, shipStartId, shipEndId));
             }
         }
     },
@@ -155,13 +157,14 @@ var Battleship = {
         {
             row = Math.floor(Math.random() * Battleship.settings.sizeY);
             col = Math.floor(Math.random() * Battleship.settings.sizeX);
+            shipStartId = '' + 2 + row + col;
+            shipEndId = '' + 2 + row + (col + length - 1);
         } 
-        while (Battleship.ValidatingShipPosition(col, row, length) === false);
+        while (Battleship.ValidatingShipPosition(shipStartId, shipEndId, 2) === false);
 
-        shipStartId = '' + 2 + row + col;
-        shipEndId = '' + 2 + row + (col + length - 1);
+        
 
-        console.log(shipStartId + ' ' + shipEndId);
+        console.log(shipStartId + ' ' + shipEndId); 
 
         var ship;
         for (var i = shipStartId; i <= shipEndId; i++)
@@ -180,7 +183,7 @@ var Battleship = {
         ship = document.getElementById(shipEndId);
         ship.setAttribute("class", "ship");
 
-        Battleship.settings.computerShips.push(new Battleship.Ship(length, col, row));
+        Battleship.settings.computerShips.push(new Battleship.Ship(length, shipStartId, shipEndId));
     }
     },
 
@@ -189,52 +192,23 @@ var Battleship = {
     // --===================================================-- 
     // -- Function for validating ships positions
     // --===================================================-- 
-    ValidatingShipPosition: function(col, row, length) 
+    ValidatingShipPosition: function(start, stop, player) 
     {
-        var bool = true;
-
-        Battleship.settings.userShips.forEach(function(ship) 
-        {
-            if (row === ship.positionY)
-            {
-                for ( var i = ship.positionX; i < (parseInt(ship.positionX) + parseInt(ship.size)); i++)
-                {
-                    if (col == i)
-                    {
-                        bool = false;
-                    }
-                }
-                
-                for ( var j = col; j < (parseInt(col) + parseInt(length)); j++)
-                {
-                    if (j == ship.positionX)
-                    {
-                        bool = false;
-                    }
-                }
-
-            }                            
-        });
-
-        if ((parseInt(col) + length) > Battleship.settings.sizeX)
-        {
-            bool = false;
-        }
-        return bool;
+            
     },
 
     // --===================================================-- 
     // -- Object constructor for ship
     // --===================================================-- 
-    Ship: function  (size, positionX, positionY)
+    Ship: function  (size, start, end)
     {
         var self = this;
 
         this.size = size;
         this.health = size;
         this.alive = true;
-        this.positionX = positionX;
-        this.positionY = positionY;
+        this.startId = start;
+        this.endId = end;
 
         function hit()
         {

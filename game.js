@@ -29,26 +29,34 @@ var Battleship = {
     // --===================================================-- 
     CreateBoard: function (sizeX, sizeY, tableID, ships) 
     {
-
+        var player;
         for (var i = 0; i < sizeY; i++) 
         {
             // Creates each row on the board and appends it to the table
             var row = document.createElement("tr");
-            row.setAttribute("id", i);
             tableID.appendChild(row);
 
             // Creates <td> and ands it to each row
             for (var j = 0; j < sizeX; j++) 
             {
                 var tdata = document.createElement("td");
-                tdata.setAttribute("id", j);
                 tdata.setAttribute("data-row", i);
                 tdata.setAttribute("data-col", j);
                 if (tableID === yourTable)
                 {
                     tdata.addEventListener('click', this.PlaceUserShip);
+                    player = 1;
                 }
-                
+                else 
+                {
+                    player = 2;
+                    tdata.addEventListener('click', function() {
+                        this.setAttribute('class', 'no-hit');
+                    });
+                }
+
+
+                tdata.setAttribute("id", '' + player + i + j);
                 // Appends <td> to <tr>
                 row.appendChild(tdata);
             }
@@ -101,11 +109,8 @@ var Battleship = {
             var col = this.getAttribute("data-col");
 
             var length = Battleship.GetLengthOfShips("userShips");
-
-            var error = Battleship.ValidatingShipPosition(col, row, length);
-
             
-            if (!error)
+            if (Battleship.ValidatingShipPosition(col, row, length))
             {
                 this.setAttribute("class", "ship");
 
@@ -136,39 +141,47 @@ var Battleship = {
     // --===================================================-- 
     PlaceComputerShip: function() 
     {
+        for (var s = 0; s < Battleship.settings.numShips; s++) 
+        {
+            
+        
         var row;
         var col;
+        var shipStartId;
+        var shipEndId;
         var length = Battleship.GetLengthOfShips("computerShips");
-        var validate;
 
         do
         {
             row = Math.floor(Math.random() * Battleship.settings.sizeY);
             col = Math.floor(Math.random() * Battleship.settings.sizeX);
-            validate = Battleship.ValidatingShipPosition(col, row, length);
         } 
-        while (validate === true);
+        while (Battleship.ValidatingShipPosition(col, row, length) === false);
 
-        Battleship.settings.computerShips.push(new Battleship.Ship(length, col, row));
+        shipStartId = '' + 2 + row + col;
+        shipEndId = '' + 2 + row + (col + length - 1);
 
-        var ship = document.getElementById("computer").children[parseInt(row)].children[parseInt(col)];
-        ship.setAttribute("class", "ship");
+        console.log(shipStartId + ' ' + shipEndId);
 
-        var sibling;
-        for(var i = 1; i < length; i++)
+        var ship;
+        for (var i = shipStartId; i <= shipEndId; i++)
         {
-            if(!sibling)
+            ship = document.getElementById(i);
+            ship.setAttribute("class", "ship");
+
+            ship.addEventListener('click', function() 
             {
-                sibling = ship.nextSibling;
-            }
-            else {
-                sibling = sibling.nextSibling;
-            }
-            sibling.setAttribute("class", "ship");
+                this.setAttribute('class', 'hit');
+            });
         }
 
-        Battleship.settings.computerShips.push(new Battleship.Ship(length, col, row));
+        
 
+        ship = document.getElementById(shipEndId);
+        ship.setAttribute("class", "ship");
+
+        Battleship.settings.computerShips.push(new Battleship.Ship(length, col, row));
+    }
     },
 
 
@@ -178,7 +191,7 @@ var Battleship = {
     // --===================================================-- 
     ValidatingShipPosition: function(col, row, length) 
     {
-        var error = false;
+        var bool = true;
 
         Battleship.settings.userShips.forEach(function(ship) 
         {
@@ -188,7 +201,7 @@ var Battleship = {
                 {
                     if (col == i)
                     {
-                        error = true;
+                        bool = false;
                     }
                 }
                 
@@ -196,20 +209,18 @@ var Battleship = {
                 {
                     if (j == ship.positionX)
                     {
-                        error = true;
+                        bool = false;
                     }
                 }
 
-            }
-                            
+            }                            
         });
 
         if ((parseInt(col) + length) > Battleship.settings.sizeX)
         {
-            error = true;
+            bool = false;
         }
-
-        return error;
+        return bool;
     },
 
     // --===================================================-- 

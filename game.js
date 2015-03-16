@@ -101,8 +101,6 @@ var Battleship = {
     // --===================================================-- 
     PlaceUserShip: function() 
     {
-        console.log(this.id);
-
         if (Battleship.settings.userShips.length < Battleship.settings.numShips)
         {
             var length = Battleship.GetLengthOfShips('userShips');
@@ -111,8 +109,6 @@ var Battleship = {
             var col = this.getAttribute("data-col");
             var shipStartId = '' + 1 + row + col;
             var shipEndId = '' + 1 + row + (parseInt(col) + length - 1);
-
-            console.log(shipStartId + ' ' + shipEndId);
             
             if (Battleship.ValidatingShipPosition(shipStartId, shipEndId, Battleship.settings.userShips) !== false)
             {
@@ -155,6 +151,8 @@ var Battleship = {
             var shipStartId;
             var shipEndId;
             var length = Battleship.GetLengthOfShips('computerShips');
+            var computerShipsArray = Battleship.settings.computerShips;
+
 
             do
             {
@@ -163,20 +161,26 @@ var Battleship = {
                 shipStartId = '' + 2 + row + col;
                 shipEndId = '' + 2 + row + (col + length - 1);
             } 
-            while (Battleship.ValidatingShipPosition(shipStartId, shipEndId, Battleship.settings.computerShips) === false);
+            while (Battleship.ValidatingShipPosition(shipStartId, shipEndId, computerShipsArray) === false);
+
+            computerShipsArray.push(new Battleship.Ship(length, shipStartId, shipEndId));
 
             var ship;
             for (var i = shipStartId; i <= shipEndId; i++)
             {
+                /*
+                    Hérna vantar að finna út hvaða skip varð fyrir skotinu og kalla í hit() aðferðin á því
+                 */
                 ship = document.getElementById(i);
-
+                var thisShip = computerShipsArray[computerShipsArray.length - 1];
+                console.log(thisShip);
                 ship.addEventListener('click', function() 
                 {
                     this.setAttribute('class', 'hit');
+
                 });
             }
 
-            Battleship.settings.computerShips.push(new Battleship.Ship(length, shipStartId, shipEndId));
         }
     },
 
@@ -192,7 +196,6 @@ var Battleship = {
             return false;
         }
 
-        console.log(start + ' ' + stop);
         for (var i = player.length - 1; i >= 0; i--) 
         { 
             for (var j = player[i].startId; j <= player[i].endId; j++)
@@ -201,7 +204,6 @@ var Battleship = {
                 {
                     if (k == j)
                     {
-                        console.log('error');
                         return false;
                     }
                 }
@@ -221,6 +223,7 @@ var Battleship = {
         this.alive = true;
         this.startId = start;
         this.endId = end;
+        this.hit = hit();
 
         function hit()
         {
@@ -228,8 +231,14 @@ var Battleship = {
             if (self.health === 0) 
             {
                 self.alive = false;
+                alert('hit');
             }
         }
+    },
+
+    FindHitShip: function(id)
+    {
+
     }
 };
 

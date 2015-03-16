@@ -101,14 +101,18 @@ var Battleship = {
     // --===================================================-- 
     PlaceUserShip: function() 
     {
+        console.log(this.id);
 
         if (Battleship.settings.userShips.length < Battleship.settings.numShips)
         {
+            var length = Battleship.GetLengthOfShips('userShips');
 
-            var row = this.getAttribute('data-row');
-            var col = this.getAttribute('data-col');
+            var row = this.getAttribute("data-row");
+            var col = this.getAttribute("data-col");
             var shipStartId = '' + 1 + row + col;
-            var shipEndId = '' + 1 + row + (col + length - 1);
+            var shipEndId = '' + 1 + row + (parseInt(col) + length - 1);
+
+            console.log(shipStartId + ' ' + shipEndId);
             
             if (Battleship.ValidatingShipPosition(shipStartId, shipEndId, Battleship.settings.userShips) !== false)
             {

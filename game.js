@@ -1,5 +1,5 @@
 (function(){
-'use strict';
+"use strict";
 
 var yourTable     = document.getElementById('you');
 var computerTable = document.getElementById('computer');
@@ -181,19 +181,22 @@ var Battleship = {
                 ship = document.getElementById(i);
                 var thisShip = computerShipsArray[computerShipsArray.length - 1];
                 console.log(thisShip);
-                ship.addEventListener('click', function() 
-                {
-                    if (Battleship.settings.userShips.length === Battleship.settings.numShips)
-                    {
-                        this.setAttribute('class', 'hit');
-                    }
-                    else
-                    {
-                        alert('You have to place your ships before you can start');
-                    }
-                });
+                ship.addEventListener('click', youHit);
             }
 
+        }
+
+        function youHit() 
+        {
+            if (Battleship.settings.userShips.length === Battleship.settings.numShips)
+            {
+                this.setAttribute('class', 'hit');
+                thisShip.hit();
+            }
+            else
+            {
+                alert('You have to place your ships before you can start');
+            }
         }
     },
 
@@ -243,7 +246,7 @@ var Battleship = {
             if (self.health === 0) 
             {
                 self.alive = false;
-                alert('hit');
+                alert('ship down');
             }
         };
     },

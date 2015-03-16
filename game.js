@@ -4,8 +4,16 @@
 var yourTable     = document.getElementById('you');
 var computerTable = document.getElementById('computer');
 
+/**
+ * Main Object for Battleship game
+ * @type {Object}
+ */
 var Battleship = {
 
+    /**
+     * Main settings for the game
+     * @type {Object}
+     */
     settings: 
     {
         sizeX: 10,
@@ -15,6 +23,9 @@ var Battleship = {
         computerShips: []
     },
 
+    /**
+     * Initializes the game
+     */
     Init: function () 
     {
         this.CreateBoard(this.settings.sizeX, this.settings.sizeY, yourTable, []);
@@ -24,9 +35,13 @@ var Battleship = {
 
     },
 
-    // --===================================================-- 
-    // -- Function for drawing playerboards
-    // --===================================================-- 
+    /**
+     * Function for the player board
+     * 
+     * @param {int} sizeX   
+     * @param {int} sizeY   
+     * @param {string} tableID string with the id for the table
+     */
     CreateBoard: function (sizeX, sizeY, tableID) 
     {
         var player;
@@ -71,7 +86,11 @@ var Battleship = {
     },
 
 
-
+    /**
+     * Returns the length of next ship that is being created
+     * @param {array} shipArray 
+     * @returns {int} 
+     */
     GetLengthOfShips: function(shipArray) 
     {
         var switchArray = (shipArray === 'userShips') ? Battleship.settings.userShips.length : Battleship.settings.computerShips.length; 
@@ -103,9 +122,9 @@ var Battleship = {
 
 
 
-    // --===================================================-- 
-    // -- Function for placing users ships
-    // --===================================================-- 
+    /**
+     * Function for placing users ships
+     */
     PlaceUserShip: function() 
     {
         if (Battleship.settings.userShips.length < Battleship.settings.numShips)
@@ -144,9 +163,9 @@ var Battleship = {
 
 
 
-    // --===================================================-- 
-    // -- Function for placing computer ships
-    // --===================================================-- 
+    /**
+     * Function for placing computer ships
+     */
     PlaceComputerShip: function() 
     {
         for (var s = 0; s < Battleship.settings.numShips; s++) 
@@ -186,6 +205,10 @@ var Battleship = {
 
         }
 
+        /**
+         * Function if user hits a enemy ship
+         * @return {void} 
+         */
         function youHit() 
         {
             if (Battleship.settings.userShips.length === Battleship.settings.numShips)
@@ -202,9 +225,13 @@ var Battleship = {
 
 
 
-    // --===================================================-- 
-    // -- Function for validating ships positions
-    // --===================================================-- 
+    /**
+     * Function for validating ships positions
+     * @param {int} start  id of column ship starts in
+     * @param {int} stop   id of column ship ends in
+     * @param {string} player object of players ships
+     * @returns {Bool} 
+     */
     ValidatingShipPosition: function(start, stop, player) 
     {
         if (stop.length === 4)
@@ -225,11 +252,15 @@ var Battleship = {
                 }
             }
         }
+        return true;
     },
 
-    // --===================================================-- 
-    // -- Object constructor for ship
-    // --===================================================-- 
+    /**
+     * Object constructor for ships
+     * @param {int} size  Determines how long each ship is
+     * @param {int} start Determines where the ship starts
+     * @param {int} end   Determines where the ship ends
+     */
     Ship: function  (size, start, end)
     {
         var self = this;
@@ -251,12 +282,11 @@ var Battleship = {
         };
     },
 
-    FindHitShip: function(id)
-    {
-
-    }
 };
 
+/**
+ * Starts the game
+ */
 Battleship.Init();
 
 

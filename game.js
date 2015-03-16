@@ -51,7 +51,14 @@ var Battleship = {
                 {
                     player = 2;
                     tdata.addEventListener('click', function() {
-                        this.setAttribute('class', 'no-hit');
+                        if (Battleship.settings.userShips.length === Battleship.settings.numShips)
+                        {
+                            this.setAttribute('class', 'no-hit');
+                        }
+                        else
+                        {
+                            alert('You have to place your ships before you can start');
+                        }
                     });
                 }
 
@@ -176,8 +183,14 @@ var Battleship = {
                 console.log(thisShip);
                 ship.addEventListener('click', function() 
                 {
-                    this.setAttribute('class', 'hit');
-
+                    if (Battleship.settings.userShips.length === Battleship.settings.numShips)
+                    {
+                        this.setAttribute('class', 'hit');
+                    }
+                    else
+                    {
+                        alert('You have to place your ships before you can start');
+                    }
                 });
             }
 
@@ -223,9 +236,8 @@ var Battleship = {
         this.alive = true;
         this.startId = start;
         this.endId = end;
-        this.hit = hit();
 
-        function hit()
+        this.hit = function ()
         {
             --self.health;
             if (self.health === 0) 
@@ -233,7 +245,7 @@ var Battleship = {
                 self.alive = false;
                 alert('hit');
             }
-        }
+        };
     },
 
     FindHitShip: function(id)

@@ -169,18 +169,12 @@ var Battleship = {
             for (var i = shipStartId; i <= shipEndId; i++)
             {
                 ship = document.getElementById(i);
-                ship.setAttribute('class', 'ship');
 
                 ship.addEventListener('click', function() 
                 {
                     this.setAttribute('class', 'hit');
                 });
             }
-
-            
-
-            ship = document.getElementById(shipEndId);
-            ship.setAttribute('class', 'ship');
 
             Battleship.settings.computerShips.push(new Battleship.Ship(length, shipStartId, shipEndId));
         }

@@ -33,6 +33,28 @@ var Battleship = {
        
         this.PlaceComputerShip();
 
+        this.Update();
+
+        
+
+
+    },
+
+    Update: function () 
+    {
+        
+        var userShipsLeft = this.settings.userShips.map(function(ship)
+        {
+            return ship.alive === true;
+        });
+
+        var computerShipsLeft = this.settings.computer.map(function(ship)
+        {
+            return ship.alive === true;
+        });
+
+        document.getElementById('ship-left-user').innerHTML = userShipsLeftl.length;
+        document.getElementById('ship-left-computer').innerHTML = computerShipsLeft.length;
     },
 
     /**
@@ -194,12 +216,9 @@ var Battleship = {
             var ship;
             for (var i = shipStartId; i <= shipEndId; i++)
             {
-                /*
-                    Hérna vantar að finna út hvaða skip varð fyrir skotinu og kalla í hit() aðferðin á því
-                 */
+
                 ship = document.getElementById(i);
                 var thisShip = computerShipsArray[computerShipsArray.length - 1];
-                console.log(thisShip);
                 ship.addEventListener('click', youHit);
             }
 

@@ -110,7 +110,7 @@ var Battleship = {
             var shipStartId = '' + 1 + row + col;
             var shipEndId = '' + 1 + row + (col + length - 1);
             
-            if (Battleship.ValidatingShipPosition(col, row, 1))
+            if (Battleship.ValidatingShipPosition(shipStartId, shipEndId, Battleship.settings.userShips) !== false)
             {
                 this.setAttribute('class', 'ship');
 
@@ -130,6 +130,7 @@ var Battleship = {
                 }
 
                 Battleship.settings.userShips.push(new Battleship.Ship(length, shipStartId, shipEndId));
+                console.log(Battleship.settings.userShips);
             }
         }
     },
@@ -158,7 +159,7 @@ var Battleship = {
                 shipStartId = '' + 2 + row + col;
                 shipEndId = '' + 2 + row + (col + length - 1);
             } 
-            while (Battleship.ValidatingShipPosition(shipStartId, shipEndId, 2) === false);
+            while (Battleship.ValidatingShipPosition(shipStartId, shipEndId, Battleship.settings.computerShips) === false);
 
             var ship;
             for (var i = shipStartId; i <= shipEndId; i++)
@@ -188,24 +189,26 @@ var Battleship = {
     // --===================================================-- 
     ValidatingShipPosition: function(start, stop, player) 
     {
-        var ships;
-        if (player == 1)
+        if (stop.length === 4)
         {
-            ships = Battleship.settings.userShips;
-        } 
-        if (player == 2)
-        {
-            ships = Battleship.settings.computerShips;
-        }   
-        
-        if (ships.length !== 0)
-        {   
-            Battleship.settings.computerShips.forEach(function()
-            {
-                console.log(this);
-            });
+            return false;
         }
-            
+
+        console.log(start + ' ' + stop);
+        for (var i = player.length - 1; i >= 0; i--) 
+        { 
+            for (var j = player[i].startId; j <= player[i].endId; j++)
+            {
+                for (var k = start; k <= stop; k++)
+                {
+                    if (k == j)
+                    {
+                        console.log('error');
+                        return false;
+                    }
+                }
+            }
+        }
     },
 
     // --===================================================-- 

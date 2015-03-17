@@ -11,6 +11,12 @@ var computerTable = document.getElementById('computer');
 var Battleship = {
 
     /**
+     * If it is user turn then it is true, else it is computurs turn
+     * @type {Boolean}
+     */
+    userTurn: true,
+
+    /**
      * Main settings for the game
      * @type {Object}
      */
@@ -33,7 +39,7 @@ var Battleship = {
        
         this.PlaceComputerShip();
 
-        this.Update();
+        
 
         
 
@@ -46,15 +52,17 @@ var Battleship = {
         var userShipsLeft = this.settings.userShips.map(function(ship)
         {
             return ship.alive === true;
-        });
+        }).length;
 
-        var computerShipsLeft = this.settings.computer.map(function(ship)
+        var computerShipsLeft = this.settings.computerShips.map(function(ship)
         {
             return ship.alive === true;
-        });
+        }).length;
 
-        document.getElementById('ship-left-user').innerHTML = userShipsLeftl.length;
-        document.getElementById('ship-left-computer').innerHTML = computerShipsLeft.length;
+        alert(computerShipsLeft);
+
+        document.getElementById('ship-left-user').innerHTML = userShipsLeft;
+        document.getElementById('ship-left-computer').innerHTML = computerShipsLeft;
     },
 
     /**
@@ -90,7 +98,15 @@ var Battleship = {
                     tdata.addEventListener('click', function() {
                         if (Battleship.settings.userShips.length === Battleship.settings.numShips)
                         {
-                            this.setAttribute('class', 'no-hit');
+                            if (Battleship.userTurn === true)
+                            {
+                                this.setAttribute('class', 'no-hit');
+                                Battleship.userTurn = false;
+
+                                Battleship.ComputerTurn();
+                            }
+                            else 
+                                alert('Wait for your turn!');
                         }
                         else
                         {
@@ -232,8 +248,16 @@ var Battleship = {
         {
             if (Battleship.settings.userShips.length === Battleship.settings.numShips)
             {
-                this.setAttribute('class', 'hit');
-                thisShip.hit();
+                if (Battleship.userTurn === true) {
+                    this.setAttribute('class', 'hit');
+                    thisShip.hit();
+
+                    Battleship.userTurn = false;
+                    Battleship.ComputerTurn();
+
+                    
+
+                }
             }
             else
             {
@@ -300,6 +324,52 @@ var Battleship = {
             }
         };
     },
+
+    ComputerTurn: function () 
+    {
+        if (Battleship.userTurn === false)
+        {
+            var x = Math.floor(Math.random() * Battleship.settings.sizeX);
+            var y = Math.floor(Math.random() * Battleship.settings.sizeY);
+            var userID = 1;
+            var targetID = userID.toString() + x + y;
+            var targetEl = document.getElementById(targetID);
+
+            
+            if (Battleship.WasHit(targetID) === true)
+            {
+                targetEl.setAttribute('class', 'hit');
+            }
+            else 
+            {
+                targetEl.setAttribute('class', 'no-hit');
+            }
+
+
+
+            console.log(targetID);
+            Battleship.userTurn = true;
+        }
+    },
+
+    WasHit: function(targetID) 
+    {
+        var hit = false;
+        Battleship.settings.userShips.forEach(function(ship)
+        {
+            for(var i = parseInt(ship.startId); i <= parseInt(ship.endId); i++) 
+            {
+                console.log('i ' + i);
+                if (parseInt(targetID) === i)
+                {
+
+                    hit = true;
+                }
+            }
+            
+        });
+        return hit;
+    }
 
 };
 

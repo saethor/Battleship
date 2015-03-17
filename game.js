@@ -96,10 +96,17 @@ var Battleship = {
                         {
                             if (Battleship.userTurn === true)
                             {
-                                this.setAttribute('class', 'no-hit');
-                                Battleship.userTurn = false;
+                                if (Battleship.settings.userShots.indexOf(this.getAttribute('id')) == -1)
+                                {
+                                    this.setAttribute('class', 'no-hit');
 
-                                Battleship.ComputerTurn();
+                                    Battleship.settings.userShots.push(this.getAttribute('id'));
+                                    Battleship.userTurn = false;
+                                    Battleship.ComputerTurn();
+                                }
+                                else {
+                                    alert('Same spot twice');
+                                }
                             }
                             else 
                                 alert('Wait for your turn!');
@@ -204,15 +211,12 @@ var Battleship = {
     {
         for (var s = 0; s < Battleship.settings.numShips; s++) 
         {
-            
-        
             var row;
             var col;
             var shipStartId;
             var shipEndId;
             var length = Battleship.GetLengthOfShips('computerShips');
             var computerShipsArray = Battleship.settings.computerShips;
-
 
             do
             {
@@ -247,14 +251,12 @@ var Battleship = {
                     }
                 });
             }
-
         }
 
         /**
          * Function if user hits a enemy ship
          * @return {void} 
-         */
-        
+         */     
     },
 
 

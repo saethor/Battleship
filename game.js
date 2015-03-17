@@ -323,7 +323,7 @@ var Battleship = {
      */
     ComputerTurn: function () 
     {
-        if (Battleship.userTurn === false)
+        if (Battleship.userTurn === false && (Battleship.settings.computerShots.length !== (Battleship.settings.sizeX * Battleship.settings.sizeY)))
         {
             var x;
             var y;

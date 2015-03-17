@@ -26,7 +26,9 @@ var Battleship = {
         sizeY: 10,
         numShips: 5,
         userShips: [],
-        computerShips: []
+        computerShips: [],
+        computerShots: [],
+        userShots: [],
     },
 
     /**
@@ -38,12 +40,6 @@ var Battleship = {
         this.CreateBoard(this.settings.sizeX, this.settings.sizeY, computerTable, []);
        
         this.PlaceComputerShip();
-
-        
-
-        
-
-
     },
 
     Update: function () 
@@ -235,7 +231,21 @@ var Battleship = {
 
                 ship = document.getElementById(i);
                 var thisShip = computerShipsArray[computerShipsArray.length - 1];
-                ship.addEventListener('click', youHit);
+
+                ship.addEventListener('click', function() 
+                {
+                    if (Battleship.settings.userShips.length === Battleship.settings.numShips)
+                    {
+                        if (Battleship.userTurn === true) {
+                            this.setAttribute('class', 'hit');
+                            thisShip.hit();
+                        }
+                    }
+                    else
+                    {
+                        alert('You have to place your ships before you can start');
+                    }
+                });
             }
 
         }
@@ -244,26 +254,7 @@ var Battleship = {
          * Function if user hits a enemy ship
          * @return {void} 
          */
-        function youHit() 
-        {
-            if (Battleship.settings.userShips.length === Battleship.settings.numShips)
-            {
-                if (Battleship.userTurn === true) {
-                    this.setAttribute('class', 'hit');
-                    thisShip.hit();
-
-                    Battleship.userTurn = false;
-                    Battleship.ComputerTurn();
-
-                    
-
-                }
-            }
-            else
-            {
-                alert('You have to place your ships before you can start');
-            }
-        }
+        
     },
 
 
@@ -309,7 +300,7 @@ var Battleship = {
         var self = this;
 
         this.size = size;
-        this.health = size;
+        this.health = (parseInt(size) + 1);
         this.alive = true;
         this.startId = start;
         this.endId = end;
@@ -325,17 +316,29 @@ var Battleship = {
         };
     },
 
+    /**
+     * Function that makes computer fire random field on user board
+     */
     ComputerTurn: function () 
     {
         if (Battleship.userTurn === false)
         {
-            var x = Math.floor(Math.random() * Battleship.settings.sizeX);
-            var y = Math.floor(Math.random() * Battleship.settings.sizeY);
-            var userID = 1;
-            var targetID = userID.toString() + x + y;
+            var x;
+            var y;
+            var userID;
+            var targetID;
+
+            do
+            {
+                x = Math.floor(Math.random() * Battleship.settings.sizeX);
+                y = Math.floor(Math.random() * Battleship.settings.sizeY);
+                userID = 1;
+                targetID = userID.toString() + x + y;  
+            } 
+            while (Battleship.settings.computerShots.indexOf(targetID) != -1);
+            
             var targetEl = document.getElementById(targetID);
 
-            
             if (Battleship.WasHit(targetID) === true)
             {
                 targetEl.setAttribute('class', 'hit');
@@ -345,13 +348,17 @@ var Battleship = {
                 targetEl.setAttribute('class', 'no-hit');
             }
 
-
-
-            console.log(targetID);
+            Battleship.settings.computerShots.push(targetID);
             Battleship.userTurn = true;
         }
     },
 
+    /**
+     * Calculates if computer hits or not. If it hits then it adds the class of
+     * hit else it adds the class of no-hit
+     * @param {string}   
+     * @returns {bool}
+     */
     WasHit: function(targetID) 
     {
         var hit = false;
@@ -359,10 +366,8 @@ var Battleship = {
         {
             for(var i = parseInt(ship.startId); i <= parseInt(ship.endId); i++) 
             {
-                console.log('i ' + i);
                 if (parseInt(targetID) === i)
                 {
-
                     hit = true;
                 }
             }

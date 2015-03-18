@@ -15,6 +15,8 @@ var Battleship = {
      * @type {Boolean}
      */
     userTurn: true,
+    userHit: 0,
+    computerHit: 0,
 
     /**
      * Main settings for the game
@@ -44,21 +46,36 @@ var Battleship = {
 
     Update: function () 
     {
-        
-        var userShipsLeft = this.settings.userShips.map(function(ship)
+        var computerTotalTargets = 0;
+        var computerLeft = 0;
+        Battleship.settings.computerShips.forEach(function(ship)
         {
-            return ship.alive === true;
-        }).length;
+            computerTotalTargets += ship.size;
+        });
+        computerLeft = computerTotalTargets - Battleship.userHit;
 
-        var computerShipsLeft = this.settings.computerShips.map(function(ship)
+        var userTotalTargets = 0;
+        var userLeft = 0;
+        Battleship.settings.userShips.forEach(function(ship)
         {
-            return ship.alive === true;
-        }).length;
+            userTotalTargets += ship.size;
+        });
+        userLeft = userTotalTargets - Battleship.computerHit;
 
-        alert(computerShipsLeft);
 
-        document.getElementById('ship-left-user').innerHTML = userShipsLeft;
-        document.getElementById('ship-left-computer').innerHTML = computerShipsLeft;
+        console.log('user: ' + userLeft + ' . computerLeft: ' + computerLeft);
+
+        if (computerLeft === 0)
+        {
+            alert('Congratulation! You just beated me!');
+            Battleship.userTurn = false;
+        }
+
+        if (userLeft === 0)
+        {
+            alert('What a SUCKER!!! I just beated you!');
+            Battleship.userTurn = false;
+        }
     },
 
     /**
@@ -197,7 +214,6 @@ var Battleship = {
                 }
 
                 Battleship.settings.userShips.push(new Battleship.Ship(length, shipStartId, shipEndId));
-                console.log(Battleship.settings.userShips);
             }
         }
     },
@@ -243,6 +259,8 @@ var Battleship = {
                         if (Battleship.userTurn === true) {
                             this.setAttribute('class', 'hit');
                             thisShip.hit();
+                            Battleship.userHit++;
+                            Battleship.Update();
                         }
                     }
                     else
@@ -302,14 +320,14 @@ var Battleship = {
         var self = this;
 
         this.size = size;
-        this.health = (parseInt(size) + 1);
+        this.health = parseInt(size);
         this.alive = true;
         this.startId = start;
         this.endId = end;
 
         this.hit = function ()
         {
-            --self.health;
+            self.health--;
             if (self.health === 0) 
             {
                 self.alive = false;
@@ -344,6 +362,8 @@ var Battleship = {
             if (Battleship.WasHit(targetID) === true)
             {
                 targetEl.setAttribute('class', 'hit');
+                Battleship.computerHit++;
+                Battleship.Update();
             }
             else 
             {

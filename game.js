@@ -233,6 +233,7 @@ var Battleship = {
             var shipEndId;
             var length = Battleship.GetLengthOfShips('computerShips');
             var computerShipsArray = Battleship.settings.computerShips;
+            
 
             do
             {
@@ -250,15 +251,12 @@ var Battleship = {
             {
 
                 ship = document.getElementById(i);
-                var thisShip = computerShipsArray[computerShipsArray.length - 1];
-
                 ship.addEventListener('click', function() 
                 {
                     if (Battleship.settings.userShips.length === Battleship.settings.numShips)
                     {
                         if (Battleship.userTurn === true) {
                             this.setAttribute('class', 'hit');
-                            thisShip.hit();
                             Battleship.userHit++;
                             Battleship.Update();
                         }
@@ -324,16 +322,6 @@ var Battleship = {
         this.alive = true;
         this.startId = start;
         this.endId = end;
-
-        this.hit = function ()
-        {
-            self.health--;
-            if (self.health === 0) 
-            {
-                self.alive = false;
-                alert('ship down');
-            }
-        };
     },
 
     /**
@@ -398,6 +386,17 @@ var Battleship = {
         return hit;
     }
 
+};
+
+Battleship.Ship.prototype.hit = function() 
+{
+    --this.health;
+    console.log(this);
+    if (this.health === 0)
+    {
+        this.alive = false;
+        alert("ship.down");
+    }
 };
 
 /**

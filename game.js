@@ -249,30 +249,36 @@ var Battleship = {
             var ship;
             for (var i = shipStartId; i <= shipEndId; i++)
             {
-
-                ship = document.getElementById(i);
-                ship.addEventListener('click', function() 
-                {
-                    if (Battleship.settings.userShips.length === Battleship.settings.numShips)
+                (function(s, i) {
+                    ship = document.getElementById(i);
+                    ship.addEventListener('click', function() 
                     {
-                        if (Battleship.userTurn === true) {
-                            this.setAttribute('class', 'hit');
-                            Battleship.userHit++;
-                            Battleship.Update();
+                        if (Battleship.settings.userShips.length === Battleship.settings.numShips)
+                        {
+                            if (Battleship.userTurn === true) {
+                                this.setAttribute('class', 'hit');
+                                computerShipsArray[s].hit();
+                                Battleship.userHit++;
+                                Battleship.Update();
+                            }
                         }
-                    }
-                    else
-                    {
-                        alert('You have to place your ships before you can start');
-                    }
-                });
+                        else
+                        {
+                            alert('You have to place your ships before you can start');
+                        }
+                    });
+                })(s, i);
+                
             }
         }
 
-        /**
-         * Function if user hits a enemy ship
-         * @return {void} 
-         */     
+        function objectHit(i) 
+        {
+            return function()
+            {
+                computerShipsArray[i].hit();
+            };
+        }   
     },
 
 
@@ -391,7 +397,6 @@ var Battleship = {
 Battleship.Ship.prototype.hit = function() 
 {
     --this.health;
-    console.log(this);
     if (this.health === 0)
     {
         this.alive = false;

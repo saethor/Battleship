@@ -249,6 +249,13 @@ var Battleship = {
             var ship;
             for (var i = shipStartId; i <= shipEndId; i++)
             {
+
+                /**
+                 * http://stackoverflow.com/questions/17981437/how-to-add-event-listeners-to-an-array-of-objects
+                 * @param  {int} s [var s from for-loop abowe]
+                 * @param  {int} i [var i from the second for-loop]
+                 * @return {void}
+                 */
                 (function(s, i) {
                     ship = document.getElementById(i);
                     ship.addEventListener('click', function() 
@@ -267,18 +274,9 @@ var Battleship = {
                             alert('You have to place your ships before you can start');
                         }
                     });
-                })(s, i);
-                
+                })(s, i);        
             }
-        }
-
-        function objectHit(i) 
-        {
-            return function()
-            {
-                computerShipsArray[i].hit();
-            };
-        }   
+        } 
     },
 
 

@@ -397,7 +397,7 @@ var Battleship = {
         container.innerHTML = "";
         var div = document.createElement('div');
         div.className = 'alert ' + type;
-        div.innerHTML = message + '<a href="#" class="close">&times;</a>';
+        div.innerHTML = message ;
 
 
         container.appendChild(div);

@@ -87,14 +87,12 @@ footer {
     background-color: #bbb;
     color: #fff;
     font-size: .9em;
-    transition: opacity 0.2s ease-in;
-    -webkit-transition: opacity 0.2s ease-in;
-    -ms-transition: opacity 0.2s ease-in;
+    opacity: 1;
+    transition: opacity 1s ease-in;
+    -webkit-transition: opacity 1s ease-in;
+    -ms-transition: opacity 1s ease-in;
 }
 
-.alert.close {
-    opacity: 0;
-}
 
 .alert.error {
     background-color: #ff7777;
@@ -102,15 +100,4 @@ footer {
 
 .alert.success {
     background-color: #55aa44;
-}
-
-.alert .close {
-    position: relative;
-    float: right;
-    color: #ffF;
-    font-size: 1.9em;
-    text-decoration: none;
-    padding: 10px;
-    top: -16px;
-    right: -10px;
 }

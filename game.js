@@ -118,7 +118,10 @@ var Battleship = {
 
                                     Battleship.settings.userShots.push(this.getAttribute('id'));
                                     Battleship.userTurn = false;
-                                    Battleship.ComputerTurn();
+                                    setTimeout(function() 
+                                    {
+                                        Battleship.ComputerTurn(); 
+                                    }, ((Math.random * 100) + 1000));
                                 }
                                 else {
                                     Battleship.Alerts('You can\'t target the same spot twice', 'error');

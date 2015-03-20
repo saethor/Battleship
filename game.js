@@ -45,6 +45,10 @@ var Battleship = {
         this.PlaceComputerShip();
     },
 
+    /**
+     * After each turn this function is runed and it 
+     * calculates if there is a winner
+     */
     Update: function () 
     {
         var computerTotalTargets = 0;
@@ -62,9 +66,6 @@ var Battleship = {
             userTotalTargets += ship.size;
         });
         userLeft = userTotalTargets - Battleship.computerHit;
-
-
-        console.log('user: ' + userLeft + ' . computerLeft: ' + computerLeft);
 
         if (computerLeft === 0)
         {
@@ -335,54 +336,58 @@ var Battleship = {
      */
     ComputerTurn: function () 
     {
-        if (Battleship.userTurn === false && (Battleship.settings.computerShots.length !== (Battleship.settings.sizeX * Battleship.settings.sizeY)))
-        {
-            var x;
-            var y;
-            var userID;
-            var targetID;
-            var counter;
+        var thinkingTime = (Math.random() * 1000) + 100;
 
-            do
+        setTimeout(function()
+        {
+            if (Battleship.userTurn === false && (Battleship.settings.computerShots.length !== (Battleship.settings.sizeX * Battleship.settings.sizeY)))
             {
-                
-                if (Battleship.lastHit !== false && counter !== 1)
+                var x;
+                var y;
+                var userID;
+                var targetID;
+                var counter;
+
+                do
                 {
-                    counter = 1;
-                    targetID = parseInt(Battleship.lastHit) + 1;
+                    
+                    if (Battleship.lastHit !== false && counter !== 1)
+                    {
+                        counter = 1;
+                        targetID = parseInt(Battleship.lastHit) + 1;
+                    }
+                    else 
+                    {
+                        x = Math.floor(Math.random() * Battleship.settings.sizeX);
+                        y = Math.floor(Math.random() * Battleship.settings.sizeY);
+                        userID = 1;
+                        targetID = userID.toString() + x + y;
+                        Battleship.lastHit = targetID;
+                    }
                 }
-                else 
+                // do while targetID is not in computerShots array (so computer cant shoot the same spot twice)
+                while (Battleship.settings.computerShots.indexOf(targetID) != -1);
+
+                var targetEl = document.getElementById(targetID);
+
+                if (Battleship.WasHit(targetID) === true)
                 {
-                    x = Math.floor(Math.random() * Battleship.settings.sizeX);
-                    y = Math.floor(Math.random() * Battleship.settings.sizeY);
-                    userID = 1;
-                    targetID = userID.toString() + x + y;
+                    targetEl.setAttribute('class', 'hit');
+                    
+                    Battleship.computerHit++;
+                    Battleship.Update();
                     Battleship.lastHit = targetID;
                 }
-            }
-            // do while targetID is not in computerShots array (so computer cant shoot the same spot twice)
-            while (Battleship.settings.computerShots.indexOf(targetID) != -1);
+                else
+                {
+                    Battleship.lastHit = false;
+                    targetEl.setAttribute('class', 'no-hit');
+                }
 
-            console.log(targetID);
-            var targetEl = document.getElementById(targetID);
-
-            if (Battleship.WasHit(targetID) === true)
-            {
-                targetEl.setAttribute('class', 'hit');
-                
-                Battleship.computerHit++;
-                Battleship.Update();
-                Battleship.lastHit = targetID;
+                Battleship.settings.computerShots.push(targetID);
+                Battleship.userTurn = true;
             }
-            else
-            {
-                Battleship.lastHit = false;
-                targetEl.setAttribute('class', 'no-hit');
-            }
-
-            Battleship.settings.computerShots.push(targetID);
-            Battleship.userTurn = true;
-        }
+        }, 1000);
     },
 
     /**

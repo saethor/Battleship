@@ -118,12 +118,10 @@ var Battleship = {
 
                                     Battleship.settings.userShots.push(this.getAttribute('id'));
                                     Battleship.userTurn = false;
-                                    setTimeout(function() 
-                                    {
-                                        Battleship.ComputerTurn(); 
-                                    }, ((Math.random * 100) + 1000));
+                                    Battleship.ComputerTurn(); 
                                 }
-                                else {
+                                else 
+                                {
                                     Battleship.Alerts('You can\'t target the same spot twice', 'error');
                                 }
                             }
@@ -434,7 +432,7 @@ Battleship.Ship.prototype.hit = function(shooter)
         switch (shooter) 
         {
             case 'computer':
-                Battleship.Alert('MUAHHAA YOU JUST LOST A SHIP');
+                Battleship.Alerts('MUAHHAA YOU JUST LOST A SHIP', 'error');
                 break;
             case 'user':
                 Battleship.Alerts('NOOOOO MY SHIP!', 'success');

@@ -63,9 +63,6 @@ var Battleship = {
         });
         userLeft = userTotalTargets - Battleship.computerHit;
 
-
-        console.log('user: ' + userLeft + ' . computerLeft: ' + computerLeft);
-
         if (computerLeft === 0)
         {
             Battleship.Alerts('Congratulation! You just beated me!', 'success');
@@ -363,7 +360,6 @@ var Battleship = {
             // do while targetID is not in computerShots array (so computer cant shoot the same spot twice)
             while (Battleship.settings.computerShots.indexOf(targetID) != -1);
 
-            console.log(targetID);
             var targetEl = document.getElementById(targetID);
 
             if (Battleship.WasHit(targetID) === true)

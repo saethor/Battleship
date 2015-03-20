@@ -109,6 +109,7 @@ var Battleship = {
                 {
                     player = 2;
                     tdata.addEventListener('click', function() {
+                        document.getElementById('alerts').innerHTML = "";
                         if (Battleship.settings.userShips.length === Battleship.settings.numShips)
                         {
                             if (Battleship.userTurn === true)
@@ -122,7 +123,7 @@ var Battleship = {
                                     Battleship.ComputerTurn();
                                 }
                                 else {
-                                    Battleship.Alerts('Same spot twice', 'error');
+                                    Battleship.Alerts('You can\'t target the same spot twice', 'error');
                                 }
                             }
                             else 
@@ -413,7 +414,7 @@ Battleship.Ship.prototype.hit = function()
     if (this.health === 0)
     {
         this.alive = false;
-        Battleship.Alerts('NOOOOO MY SHIP!');
+        Battleship.Alerts('NOOOOO MY SHIP!', 'success');
     }
 };
 

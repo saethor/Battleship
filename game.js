@@ -17,6 +17,9 @@ var Battleship = {
     userTurn: true,
     userHit: 0,
     computerHit: 0,
+    lastHit: false,
+    lastHitRight: false,
+    lastHitLeft: false,
 
     /**
      * Main settings for the game
@@ -339,26 +342,42 @@ var Battleship = {
             var y;
             var userID;
             var targetID;
+            var counter;
 
             do
             {
-                x = Math.floor(Math.random() * Battleship.settings.sizeX);
-                y = Math.floor(Math.random() * Battleship.settings.sizeY);
-                userID = 1;
-                targetID = userID.toString() + x + y;  
-            } 
+                
+                if (Battleship.lastHit !== false && counter !== 1)
+                {
+                    counter = 1;
+                    targetID = parseInt(Battleship.lastHit) + 1;
+                }
+                else 
+                {
+                    x = Math.floor(Math.random() * Battleship.settings.sizeX);
+                    y = Math.floor(Math.random() * Battleship.settings.sizeY);
+                    userID = 1;
+                    targetID = userID.toString() + x + y;
+                    Battleship.lastHit = targetID;
+                }
+            }
+            // do while targetID is not in computerShots array (so computer cant shoot the same spot twice)
             while (Battleship.settings.computerShots.indexOf(targetID) != -1);
-            
+
+            console.log(targetID);
             var targetEl = document.getElementById(targetID);
 
             if (Battleship.WasHit(targetID) === true)
             {
                 targetEl.setAttribute('class', 'hit');
+                
                 Battleship.computerHit++;
                 Battleship.Update();
+                Battleship.lastHit = targetID;
             }
-            else 
+            else
             {
+                Battleship.lastHit = false;
                 targetEl.setAttribute('class', 'no-hit');
             }
 

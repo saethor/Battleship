@@ -387,7 +387,7 @@ var Battleship = {
                 Battleship.settings.computerShots.push(targetID);
                 Battleship.userTurn = true;
             }
-        }, 1000);
+        }, thinkingTime);
     },
 
     /**

@@ -67,13 +67,13 @@ var Battleship = {
 
         if (computerLeft === 0)
         {
-            alert('Congratulation! You just beated me!');
+            Battleship.Alerts('Congratulation! You just beated me!', 'success');
             Battleship.userTurn = false;
         }
 
         if (userLeft === 0)
         {
-            alert('What a SUCKER!!! I just beated you!');
+            Battleship.Alerts('What a SUCKER!!! I just beated you!', 'error');
             Battleship.userTurn = false;
         }
     },
@@ -122,15 +122,15 @@ var Battleship = {
                                     Battleship.ComputerTurn();
                                 }
                                 else {
-                                    alert('Same spot twice');
+                                    Battleship.Alerts('Same spot twice', 'error');
                                 }
                             }
                             else 
-                                alert('Wait for your turn!');
+                                Battleship.Alerts('Wait for your turn!', 'error');
                         }
                         else
                         {
-                            alert('You have to place your ships before you can start');
+                            Battleship.Alerts('You have to place your ships before you can start', 'error');
                         }
                     });
                 }
@@ -271,7 +271,7 @@ var Battleship = {
                         }
                         else
                         {
-                            alert('You have to place your ships before you can start');
+                            Battleship.Alerts('You have to place your ships before you can start', 'error');
                         }
                     });
                 })(s, i);        
@@ -388,17 +388,32 @@ var Battleship = {
             
         });
         return hit;
+    },
+
+    Alerts: function(message, type)
+    {
+        var container = document.getElementById('alerts');
+        container.innerHTML = "";
+        var div = document.createElement('div');
+        div.className = 'alert ' + type;
+        div.innerHTML = message + '<a href="#" class="close">&times;</a>';
+
+
+        container.appendChild(div);
     }
 
 };
 
+/**
+ * If ship is hit it decreses its live and lets user know if ship is down
+ */
 Battleship.Ship.prototype.hit = function() 
 {
     --this.health;
     if (this.health === 0)
     {
         this.alive = false;
-        alert("ship.down");
+        Battleship.Alerts('NOOOOO MY SHIP!');
     }
 };
 

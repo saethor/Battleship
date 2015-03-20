@@ -10,6 +10,7 @@ body {
     height: 100vh;
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
+    margin: 0;
 }
 
 .container {
@@ -67,4 +68,49 @@ td {
 footer {
     font-size: 0.8em;
     text-align: center;
+}
+
+
+.alert-container {
+    margin: 20px;
+}
+
+.alert-container .left,
+.alert-container .right {
+    float: left;
+    width: calc(50% - 20px);
+    padding: 10px;
+}
+
+.alert {
+    padding: 20px;
+    background-color: #bbb;
+    color: #fff;
+    font-size: .9em;
+    transition: opacity 0.2s ease-in;
+    -webkit-transition: opacity 0.2s ease-in;
+    -ms-transition: opacity 0.2s ease-in;
+}
+
+.alert.close {
+    opacity: 0;
+}
+
+.alert.error {
+    background-color: #ff7777;
+}
+
+.alert.success {
+    background-color: #55aa44;
+}
+
+.alert .close {
+    position: relative;
+    float: right;
+    color: #ffF;
+    font-size: 1.9em;
+    text-decoration: none;
+    padding: 10px;
+    top: -16px;
+    right: -10px;
 }

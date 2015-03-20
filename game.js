@@ -263,7 +263,7 @@ var Battleship = {
                         {
                             if (Battleship.userTurn === true) {
                                 this.setAttribute('class', 'hit');
-                                computerShipsArray[s].hit();
+                                computerShipsArray[s].hit('user');
                                 Battleship.userHit++;
                                 Battleship.Update();
                             }
@@ -397,6 +397,7 @@ var Battleship = {
                 if (parseInt(targetID) === i)
                 {
                     hit = true;
+                    ship.hit('computer');
                 }
             }
             
@@ -421,13 +422,22 @@ var Battleship = {
 /**
  * If ship is hit it decreses its live and lets user know if ship is down
  */
-Battleship.Ship.prototype.hit = function() 
+Battleship.Ship.prototype.hit = function(shooter) 
 {
     --this.health;
     if (this.health === 0)
     {
         this.alive = false;
-        Battleship.Alerts('NOOOOO MY SHIP!', 'success');
+        switch (shooter) 
+        {
+            case 'computer':
+                Battleship.Alert('MUAHHAA YOU JUST LOST A SHIP');
+                break;
+            case 'user':
+                Battleship.Alerts('NOOOOO MY SHIP!', 'success');
+                break;
+
+        }
     }
 };
 

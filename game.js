@@ -18,8 +18,6 @@ var Battleship = {
     userHit: 0,
     computerHit: 0,
     lastHit: false,
-    lastHitRight: false,
-    lastHitLeft: false,
 
     /**
      * Main settings for the game
@@ -64,9 +62,6 @@ var Battleship = {
             userTotalTargets += ship.size;
         });
         userLeft = userTotalTargets - Battleship.computerHit;
-
-
-        console.log('user: ' + userLeft + ' . computerLeft: ' + computerLeft);
 
         if (computerLeft === 0)
         {

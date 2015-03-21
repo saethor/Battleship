@@ -39,8 +39,8 @@ var Battleship = {
      */
     Init: function () 
     {
-        this.CreateBoard(this.settings.sizeX, this.settings.sizeY, yourTable, []);
-        this.CreateBoard(this.settings.sizeX, this.settings.sizeY, computerTable, []);
+        this.CreateBoard(this.settings.sizeX, this.settings.sizeY, yourTable);
+        this.CreateBoard(this.settings.sizeX, this.settings.sizeY, computerTable);
        
         this.PlaceComputerShip();
     },
@@ -86,6 +86,7 @@ var Battleship = {
     CreateBoard: function (sizeX, sizeY, tableID) 
     {
         var player;
+        var tdata;
         for (var i = 0; i < sizeY; i++) 
         {
             // Creates each row on the board and appends it to the table
@@ -95,51 +96,65 @@ var Battleship = {
             // Creates <td> and ands it to each row
             for (var j = 0; j < sizeX; j++) 
             {
-                var tdata = document.createElement('td');
-                tdata.setAttribute('data-row', i);
-                tdata.setAttribute('data-col', j);
-                if (tableID === yourTable)
-                {
-                    tdata.addEventListener('click', this.PlaceUserShip);
-                    player = 1;
-                }
-                else 
-                {
-                    player = 2;
-                    tdata.addEventListener('click', function() {
-                        document.getElementById('alerts').innerHTML = "";
-                        if (Battleship.settings.userShips.length === Battleship.settings.numShips)
-                        {
-                            if (Battleship.userTurn === true)
-                            {
-                                if (Battleship.settings.userShots.indexOf(this.getAttribute('id')) == -1)
-                                {
-                                    this.setAttribute('class', 'no-hit');
-
-                                    Battleship.settings.userShots.push(this.getAttribute('id'));
-                                    Battleship.userTurn = false;
-                                    Battleship.ComputerTurn(); 
-                                }
-                                else 
-                                {
-                                    Battleship.Alerts('You can\'t target the same spot twice', 'error');
-                                }
-                            }
-                            else 
-                                Battleship.Alerts('Wait for your turn!', 'error');
-                        }
-                        else
-                        {
-                            Battleship.Alerts('You have to place your ships before you can start', 'error');
-                        }
-                    });
-                }
-
-
-                tdata.setAttribute('id', '' + player + i + j);
+                tdata = createRows(i, j);
                 // Appends <td> to <tr>
                 row.appendChild(tdata);
             }
+        }
+
+        /**
+         * Fills tdata with rows and adds event listeners
+         * @param  {i} i from the first for loop
+         * @param  {j} j form the second for loop
+         * @return {html}   
+         */
+        function createRows(i, j) 
+        {
+            var tdata = document.createElement('td');
+            tdata.setAttribute('data-row', i);
+            tdata.setAttribute('data-col', j);
+            if (tableID === yourTable)
+            {
+                tdata.addEventListener('click', Battleship.PlaceUserShip);
+                player = 1;
+            }
+            else 
+            {
+                player = 2;
+                tdata.addEventListener('click', function() 
+                {
+                    document.getElementById('alerts').innerHTML = "";
+                    if (Battleship.settings.userShips.length === Battleship.settings.numShips)
+                    {
+                        if (Battleship.userTurn === true)
+                        {
+                            if (Battleship.settings.userShots.indexOf(this.getAttribute('id')) == -1)
+                            {
+                                this.setAttribute('class', 'no-hit');
+
+                                Battleship.settings.userShots.push(this.getAttribute('id'));
+                                Battleship.userTurn = false;
+                                Battleship.ComputerTurn(); 
+                            }
+                            else 
+                            {
+                                Battleship.Alerts('You can\'t target the same spot twice', 'error');
+                            }
+                        }
+                        else 
+                            Battleship.Alerts('Wait for your turn!', 'error');
+                    }
+                    else
+                    {
+                        Battleship.Alerts('You have to place your ships before you can start', 'error');
+                    }
+                });
+            }
+
+
+            tdata.setAttribute('id', '' + player + i + j);
+
+            return tdata;
         }
     },
 
@@ -249,34 +264,35 @@ var Battleship = {
             var ship;
             for (var i = shipStartId; i <= shipEndId; i++)
             {
-
-                /**
-                 * http://stackoverflow.com/questions/17981437/how-to-add-event-listeners-to-an-array-of-objects
-                 * @param  {int} s [var s from for-loop abowe]
-                 * @param  {int} i [var i from the second for-loop]
-                 * @return {void}
-                 */
-                (function(s, i) {
-                    ship = document.getElementById(i);
-                    ship.addEventListener('click', function() 
-                    {
-                        if (Battleship.settings.userShips.length === Battleship.settings.numShips)
-                        {
-                            if (Battleship.userTurn === true) {
-                                this.setAttribute('class', 'hit');
-                                computerShipsArray[s].hit('user');
-                                Battleship.userHit++;
-                                Battleship.Update();
-                            }
-                        }
-                        else
-                        {
-                            Battleship.Alerts('You have to place your ships before you can start', 'error');
-                        }
-                    });
-                })(s, i);        
+                userHit(s, i);
             }
         } 
+
+        /**
+         * http://stackoverflow.com/questions/17981437/how-to-add-event-listeners-to-an-array-of-objects
+         * @param  {int} s [var s from for-loop abowe]
+         * @param  {int} i [var i from the second for-loop]
+         * @return {void}
+         */
+        function userHit(s, i) {
+            ship = document.getElementById(i);
+            ship.addEventListener('click', function() 
+            {
+                if (Battleship.settings.userShips.length === Battleship.settings.numShips)
+                {
+                    if (Battleship.userTurn === true) {
+                        this.setAttribute('class', 'hit');
+                        computerShipsArray[s].hit('user');
+                        Battleship.userHit++;
+                        Battleship.Update();
+                    }
+                }
+                else
+                {
+                    Battleship.Alerts('You have to place your ships before you can start', 'error');
+                }
+            });
+        }
     },
 
 

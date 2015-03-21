@@ -45,10 +45,6 @@ var Battleship = {
         this.PlaceComputerShip();
     },
 
-    /**
-     * After each turn this function is runed and it 
-     * calculates if there is a winner
-     */
     Update: function () 
     {
         var computerTotalTargets = 0;
@@ -375,13 +371,6 @@ var Battleship = {
                 Battleship.Update();
                 Battleship.lastHit = targetID;
             }
-
-        }
-        // do while targetID is not in computerShots array (so computer cant shoot the same spot twice)
-        while (Battleship.settings.computerShots.indexOf(targetID) != -1);
-
-        var targetEl = document.getElementById(targetID);
-
             else
             {
                 Battleship.lastHit = false;

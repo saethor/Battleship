@@ -45,6 +45,9 @@ var Battleship = {
         this.PlaceComputerShip();
     },
 
+    /**
+     * Checks if there is a winner
+     */
     Update: function () 
     {
         var computerTotalTargets = 0;
@@ -355,8 +358,13 @@ var Battleship = {
             var y;
             var userID;
             var targetID;
+
+            // If last shoot was hit I find out what object that was and find
+            // targets that are unshoot and shoot them 
+            // (a little cheat to make the gameplay better)
             if (Battleship.lastHit !== false)
             {
+                // Find the target ship
                 var shipArray = Battleship.settings.userShips.filter(function(ship) {
                     for (var i = parseInt(ship.startId); i <= parseInt(ship.endId); i++)
                     {
@@ -368,6 +376,8 @@ var Battleship = {
                 });
 
                 var shipObject = shipArray[0];
+
+                // Loop through and find missing targets
                 for (var i = parseInt(shipObject.startId); i <= parseInt(shipObject.endId); i++)
                 {
                     if (!inArray(i, Battleship.settings.computerShots))
@@ -377,19 +387,16 @@ var Battleship = {
                 }
             }
 
+            // If last hit was false or the ship is down this chunk runs
             if (Battleship.lastHit === false || targetID === undefined)
             {
                 do
                 {
-
-                    //else 
-                    //{
-                        x = Math.floor(Math.random() * Battleship.settings.sizeX);
-                        y = Math.floor(Math.random() * Battleship.settings.sizeY);
-                        userID = 1;
-                        targetID = userID.toString() + x + y;
-                        Battleship.lastHit = targetID;
-                    //}
+                    x = Math.floor(Math.random() * Battleship.settings.sizeX);
+                    y = Math.floor(Math.random() * Battleship.settings.sizeY);
+                    userID = 1;
+                    targetID = userID.toString() + x + y; // Target id, 2 + x + y where 2 is the id for computer board
+                    Battleship.lastHit = targetID;
                 }
                 // do while targetID is not in computerShots array (so computer
                 // cant shoot the same spot twice)
@@ -398,6 +405,8 @@ var Battleship = {
 
             var targetEl = document.getElementById(targetID);
 
+            // Checking if it was hit, if so it sets the class hit to it and
+            // runs Update() and initializes lasthit variable
             if (Battleship.WasHit(targetID) === true)
             {
                 targetEl.setAttribute('class', 'hit');
@@ -406,20 +415,25 @@ var Battleship = {
                 Battleship.Update();
                 Battleship.lastHit = targetID;
             }
+
+            // If it was not a hit it adds the class of no-hit and sets the
+            // variable lastHit to false
             else
             {
                 Battleship.lastHit = false;
                 targetEl.setAttribute('class', 'no-hit');
             }
 
+            // Adds the target id to computerShots array and sets user turn to
+            // true
             Battleship.settings.computerShots.push(targetID);
             Battleship.userTurn = true;
         }
     },
 
     /**
-     * Calculates if computer hits or not. If it hits then it adds the class of
-     * hit else it adds the class of no-hit
+     * Loops through user ships and finds if it is a hit on any of the ships, if
+     * so it sets the hit to true and runs hit() function
      * @param {string}
      * @returns {bool}
      */
@@ -441,6 +455,11 @@ var Battleship = {
         return hit;
     },
 
+    /**
+     * Flashes alerts messages on top of the pages. 
+     * @param {string} message Message that is being displayed
+     * @param {strung} type    Type of error message, added as a class (error, success)
+     */
     Alerts: function(message, type)
     {
         var div = document.getElementById('alerts');
@@ -452,8 +471,10 @@ var Battleship = {
 };
 
 /**
- * If ship is hit it decreses its live and lets user know if ship is down
- */
+ * If it is a hit this function decreses the live of the ship and if it sinks it changes alive to false and displays a alert message
+ * @param  {string} shooter Who is the shooter
+ * @return {void}         
+ */ 
 Battleship.Ship.prototype.hit = function(shooter) 
 {
     --this.health;
@@ -478,6 +499,12 @@ Battleship.Ship.prototype.hit = function(shooter)
  */
 Battleship.Init();
 
+/**
+ * Helper function to find a value in a array
+ * @param  {string} needle   What value are you looking for
+ * @param  {array} heystack  Where are you looking for that array
+ * @return {Boolean}         
+ */
 function inArray(needle, heystack)
 {
     var length = heystack.length;

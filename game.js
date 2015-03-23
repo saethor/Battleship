@@ -201,7 +201,9 @@ var Battleship = {
 
 
     /**
-     * Function for placing users ships
+     * Function for placing users ships. It loops through each column of the
+     * ship and adds a class on the board so it is vissable. Ends in pushing it
+     * to the userShips array
      */
     PlaceUserShip: function() 
     {
@@ -241,7 +243,8 @@ var Battleship = {
 
 
     /**
-     * Function for placing computer ships
+     * Function for placing computer ships and adds eventlistener so user can
+     * target them. pushed to the computerShips array in the end
      */
     PlaceComputerShip: function() 
     {

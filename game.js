@@ -355,30 +355,46 @@ var Battleship = {
             var y;
             var userID;
             var targetID;
-            var counter;
-
-            do
+            if (Battleship.lastHit !== false)
             {
-                if (Battleship.lastHit !== false && counter !== 1)
+                var shipArray = Battleship.settings.userShips.filter(function(ship) {
+                    for (var i = parseInt(ship.startId); i <= parseInt(ship.endId); i++)
+                    {
+                        if (parseInt(Battleship.lastHit) == i)
+                        {
+                            return ship;
+                        }
+                    }
+                });
+
+                var shipObject = shipArray[0];
+                for (var i = parseInt(shipObject.startId); i <= parseInt(shipObject.endId); i++)
                 {
-                    // Counter prevents the loop form accessing this area
-                    // ofter then once to prevent infinity loop
-                    counter = 1;
-                    targetID = parseInt(Battleship.lastHit) + 1;
-                }
-                else 
-                {
-                    x = Math.floor(Math.random() * Battleship.settings.sizeX);
-                    y = Math.floor(Math.random() * Battleship.settings.sizeY);
-                    userID = 1;
-                    targetID = userID.toString() + x + y;
-                    Battleship.lastHit = targetID;
+                    if (!inArray(i, Battleship.settings.computerShots))
+                    {
+                        targetID = i;
+                    }
                 }
             }
-            // do while targetID is not in computerShots array (so computer
-            // cant shoot the same spot twice)
-            //while (Battleship.settings.computerShots.indexOf(targetID) != -1);
-            while (inArray(targetID, Battleship.settings.computerShots));
+
+            if (Battleship.lastHit === false || targetID === undefined)
+            {
+                do
+                {
+
+                    //else 
+                    //{
+                        x = Math.floor(Math.random() * Battleship.settings.sizeX);
+                        y = Math.floor(Math.random() * Battleship.settings.sizeY);
+                        userID = 1;
+                        targetID = userID.toString() + x + y;
+                        Battleship.lastHit = targetID;
+                    //}
+                }
+                // do while targetID is not in computerShots array (so computer
+                // cant shoot the same spot twice)
+                while (inArray(targetID, Battleship.settings.computerShots));
+            }
 
             var targetEl = document.getElementById(targetID);
 

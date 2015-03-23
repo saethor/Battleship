@@ -1,5 +1,5 @@
 (function(){
-"use strict";
+'use strict';
 
 var yourTable     = document.getElementById('you');
 var computerTable = document.getElementById('computer');
@@ -123,7 +123,7 @@ var Battleship = {
                 player = 2;
                 tdata.addEventListener('click', function() 
                 {
-                    document.getElementById('alerts').innerHTML = "";
+                    document.getElementById('alerts').innerHTML = '';
                     if (Battleship.settings.userShips.length === Battleship.settings.numShips)
                     {
                         if (Battleship.userTurn === true)
@@ -204,8 +204,8 @@ var Battleship = {
         {
             var length = Battleship.GetLengthOfShips('userShips');
 
-            var row = this.getAttribute("data-row");
-            var col = this.getAttribute("data-col");
+            var row = this.getAttribute('data-row');
+            var col = this.getAttribute('data-col');
             var shipStartId = '' + 1 + row + col;
             var shipEndId = '' + 1 + row + (parseInt(col) + length - 1);
             
@@ -335,8 +335,6 @@ var Battleship = {
      */
     Ship: function  (size, start, end)
     {
-        var self = this;
-
         this.size = size;
         this.health = parseInt(size);
         this.alive = true;
@@ -425,7 +423,7 @@ var Battleship = {
     Alerts: function(message, type)
     {
         var container = document.getElementById('alerts');
-        container.innerHTML = "";
+        container.innerHTML = '';
         var div = document.createElement('div');
         div.className = 'alert ' + type;
         div.innerHTML = message ;

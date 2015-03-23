@@ -359,9 +359,10 @@ var Battleship = {
 
             do
             {
-                
                 if (Battleship.lastHit !== false && counter !== 1)
                 {
+                    // Counter prevents the loop form accessing this area
+                    // ofter then once to prevent infinity loop
                     counter = 1;
                     targetID = parseInt(Battleship.lastHit) + 1;
                 }
@@ -374,8 +375,10 @@ var Battleship = {
                     Battleship.lastHit = targetID;
                 }
             }
-            // do while targetID is not in computerShots array (so computer cant shoot the same spot twice)
-            while (Battleship.settings.computerShots.indexOf(targetID) != -1);
+            // do while targetID is not in computerShots array (so computer
+            // cant shoot the same spot twice)
+            //while (Battleship.settings.computerShots.indexOf(targetID) != -1);
+            while (inArray(targetID, Battleship.settings.computerShots));
 
             var targetEl = document.getElementById(targetID);
 
@@ -401,7 +404,7 @@ var Battleship = {
     /**
      * Calculates if computer hits or not. If it hits then it adds the class of
      * hit else it adds the class of no-hit
-     * @param {string}   
+     * @param {string}
      * @returns {bool}
      */
     WasHit: function(targetID) 
@@ -458,6 +461,16 @@ Battleship.Ship.prototype.hit = function(shooter)
  * Starts the game
  */
 Battleship.Init();
+
+function inArray(needle, heystack)
+{
+    var length = heystack.length;
+    for (var i = 0; i < length; i++)
+    {
+        if (heystack[i] == needle) return true;
+    }
+    return false;
+}
 
 
 }());

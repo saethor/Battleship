@@ -20,7 +20,7 @@ body {
 
 .board {
     float:left;
-    margin:0 auto;
+    margin:50px auto;
     width: 50%;
 }
 
@@ -70,34 +70,37 @@ footer {
     text-align: center;
 }
 
-
-.alert-container {
-    margin: 20px;
-}
-
-.alert-container .left,
-.alert-container .right {
-    float: left;
-    width: calc(50% - 20px);
-    padding: 10px;
-}
-
 .alert {
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    min-width: 500px;
     padding: 20px;
     background-color: #bbb;
     color: #fff;
     font-size: .9em;
-    opacity: 1;
-    transition: opacity 1s ease-in;
-    -webkit-transition: opacity 1s ease-in;
-    -ms-transition: opacity 1s ease-in;
+    text-align: center;
+    opacity: 0;
 }
 
 
 .alert.error {
     background-color: #ff7777;
+    -webkit-transition: opacity 5s ease-in;
+    -moz-transition: opacity 5s ease-in;
+    -ms-transition: opacity 5s ease-in;
+    -o-transition: opacity 5s ease-in;
+    transition: opacity 5s ease-in;
 }
 
 .alert.success {
     background-color: #55aa44;
+    -webkit-transition: opacity 5s ease-in;
+    -moz-transition: opacity 5s ease-in;
+    -ms-transition: opacity 5s ease-in;
+    -o-transition: opacity 5s ease-in;
+    transition: opacity 5s ease-in;
 }

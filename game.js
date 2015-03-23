@@ -123,7 +123,9 @@ var Battleship = {
                 player = 2;
                 tdata.addEventListener('click', function() 
                 {
-                    document.getElementById('alerts').innerHTML = '';
+                    var alerts = document.getElementById('alerts');
+                    alerts.className = '';
+                    alerts.innerHTML = '';
                     if (Battleship.settings.userShips.length === Battleship.settings.numShips)
                     {
                         if (Battleship.userTurn === true)
@@ -422,14 +424,10 @@ var Battleship = {
 
     Alerts: function(message, type)
     {
-        var container = document.getElementById('alerts');
-        container.innerHTML = '';
-        var div = document.createElement('div');
+        var div = document.getElementById('alerts');
+        div.innerHTML = '';
         div.className = 'alert ' + type;
         div.innerHTML = message ;
-
-
-        container.appendChild(div);
     }
 
 };
